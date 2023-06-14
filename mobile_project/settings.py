@@ -199,5 +199,5 @@ CART_SESSION_ID = 'cart'
 
 
 
-RAZOR_KEY_ID = 'rzp_test_8UagrbDvjbAaIv'
-RAZOR_KEY_SECRET = 'GF9RtYsotv4MB175buR2udiP'
+RAZOR_KEY_ID = 'rzp_test_vaEZZjhXl2fQmb'
+RAZOR_KEY_SECRET = 'q8jW2tGqC2ZrRM0J2hvpVkvu'

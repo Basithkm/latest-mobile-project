@@ -100,7 +100,6 @@ def paymenthandler(request):
 
 
 
-
 def view_orders(request):
     if request.user.is_authenticated:
         user= request.user
