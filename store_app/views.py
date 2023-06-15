@@ -15,12 +15,17 @@ from cart.forms import CartAddProductForm
 
 
 
+
+
 def index(request):
+    full_products = MobilePouch.objects.all().order_by('-id')
     product= MobileBrand.objects.all()
     context ={
-        'brand_products':product
+        'brand_products':product,
+        'full_products':full_products
     }
     return render(request,'store/index.html',context)
+
 
 
 def filter_brand(request,id):

@@ -52,28 +52,47 @@
      </div>
     {% endif %}
     <div class="row">
-        {% for products in brand_products %} 
+      {% for products in brand_products %} 
         
+        <div class="col-md-3">
+          <div class="card">
+              <a style="text-decoration: none;" href="{% url 'filter_brand' products.id %}"><img class="card-img-top" src="{{products.cover_image_brand.url}}" alt="Product 1"></a>
+            <div class="card-body">
+              <a style="text-decoration: none;" href="{% url 'filter_brand' products.id %}"><h5 class="card-title">{{products.brand_name}}</h5></a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    <br><br><br><br>
+products
+
+
+
+    <div class="row">
+
+    
+      {% for products in full_products %} 
       <div class="col-md-3">
         <div class="card">
-            <a style="text-decoration: none;" href="{% url 'filter_brand' products.id %}"><img class="card-img-top" src="{{products.cover_image_brand.url}}" alt="Product 1"></a>
+          <a style="text-decoration: none;" href="{% url 'product_inner_page' products.id %}"><img class="card-img-top" src="{{products.cover_image.url}}" alt="Product 1"></a>
           <div class="card-body">
-            <a style="text-decoration: none;" href="{% url 'filter_brand' products.id %}"><h5 class="card-title">{{products.brand_name}}</h5></a>
+            <h5 class="card-title">{{products.phone_name}}</h5>
+            <a style="text-decoration: none;" href="{% url 'product_inner_page' products.id %}"><p class="card-text">
+              product name: {{products.product_name}}<br>
+                phone name: {{products.phone_name}}<br>
+                Brand: {{products.brand_name}}<br>
+                Price: {{products.price}}<br>
+                Offer Price:{{products.offer_price}}<br>
+               
+            </p></a>
           </div>
         </div>
       </div>
       {% endfor %}
-    </div>
+
+    </div>    
   </div>
-
-
-
-
-
-
-
-
-
 
 
 </body>
@@ -92,6 +111,6 @@
   });
   </script>
 
-  
+
 </html> 
 
