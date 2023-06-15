@@ -15,5 +15,4 @@ class OrderCreateForm(forms.ModelForm):
             'postal_code': forms.TextInput(attrs={'class': 'form-control'}),
             'city': forms.TextInput(attrs={'class': 'form-control'}),
             'user': forms.HiddenInput(attrs={'class': 'form-control'}),
-          
         }

@@ -27,6 +27,7 @@ class Order(models.Model):
     city = models.CharField(max_length=100)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    payment_id = models.CharField(max_length=100, null=True, blank=True)
     order_status = models.CharField(max_length=20, choices=ORDER_STATUS_CHOICES, default=ORDER_STATUS_ACCEPTED) 
     paid = models.BooleanField(default=False)
 

@@ -56,13 +56,20 @@ def payment(request,id):
     amount_in_paisa = int(decimal_amount)
     amount =amount_in_paisa * 100
     print(amount)
+
     
     razorpay_order = razorpay_client.order.create(dict(amount=amount, currency=currency, payment_capture='0'))
     #     Order id of newly created order
     razorpay_order_id = razorpay_order['id']
+    
     callback_url = reverse('orders:paymenthandler')
     #     We need to pass these details to frontend
-    context = {}
+
+    
+
+    context = {
+        'order':order
+    }
     context['razorpay_order_id'] = razorpay_order_id
     context['razorpay_merchant_key'] = settings.RAZOR_KEY_ID
     context['razorpay_amount'] = amount
@@ -70,6 +77,7 @@ def payment(request,id):
     context['callback_url'] = callback_url
     return render(request, 'orders/order/payment.html', context)
 
+from django.http import HttpResponse
 
 @csrf_exempt
 def paymenthandler(request):
@@ -88,11 +96,23 @@ def paymenthandler(request):
                 amount = 20000
                 try:
                     razorpay_client.payment.capture(payment_id, amount)
-                    return render(request, 'orders/order/paymentsuccess.html')
+
+                    # return render(request, 'orders/order/paymentsuccess.html')
+                    messages.success(request,'payment success')
+                    return redirect('/')
                 except:
-                    return render(request, 'orders/order/paymentfail.html')
+                    messages.info(request,'payment fail')
+                    return redirect('/')
             else:
-                return render(request, 'orders/order/paymentfail.html')
+
+                # payment = razorpay_client.payment.fetch(payment_id)
+                # if payment.get('status') :
+                #     payment_address = Order.objects.get(id=payment.get('metadata').get('razorpay_order_id'))
+                #     payment_address.paid = True
+                #     payment_address.save()
+
+                messages.info(request,'payment failed')
+                return redirect('/')
         except:
             return HttpResponseBadRequest()
     else:

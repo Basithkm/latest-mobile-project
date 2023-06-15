@@ -4,13 +4,10 @@
 <div class="container">
     <h1 class="text text-center bg-secondary text-white mt-0 p-1">Make Payment</h1>
     <div class="card">
-        <h1 class="title">Buy Me a Chai ☕</h1>
-        <small class="muted"
-        >If you like my work, you can support me by donating ₹200</small
-        >
+       
         <div class="btn_container">
             <!-- Payment Button -->
-            <button class="btn" id="pay-btn">Pay</button>
+            <button class="btn-btn-success" id="pay-btn">Pay</button>
         </div>
     </div>
 </div>
@@ -29,7 +26,7 @@
         currency: "{{ currency }}",
 
         // Your/store name.
-        name: "Dj Razorpay",
+        name: "Mobile shop",
 
         // Pass the `id` obtained in the response of Step 1
         order_id: "{{ razorpay_order_id }}",
@@ -42,12 +39,12 @@
         //     alert(response.razorpay_signature)
         // },
         "prefill": {
-            "name": "Gaurav Kumar",
-            "email": "gaurav.kumar@example.com",
-            "contact": "9999999999"
+            "name": "{{order.first_name}}",
+            "email": "{{order.email}}",
+            "contact": "{{order.phone}}"
         },
         "notes": {
-            "address": "Razorpay Corporate Office"
+            "address": "Mobile pro"
         },
         "theme": {
             "color": "#3399cc"
