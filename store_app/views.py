@@ -48,11 +48,15 @@ def spaceautocomplete(request):
         query = request.GET.get('term', '')
 
         # Filter products based on search query
+      
+
         products = MobilePouch.objects.filter(
-            phone_name__phone_name__icontains=query,
-            brand_name__brand_name__icontains=query,
-            product_name__icontains=query
-        )
+                brand_name__brand_name__icontains=query
+            ) | MobilePouch.objects.filter(
+                phone_name__phone_name__icontains=query
+            )| MobilePouch.objects.filter(
+                product_name__icontains=query
+            )
 
 
         data = []
@@ -78,7 +82,13 @@ def search(request):
         query = request.GET.get('query', '')
 
         # Filter products based on search query
-        products = MobilePouch.objects.filter(phone_name__phone_name__icontains=query)
+        products = MobilePouch.objects.filter(
+                brand_name__brand_name__icontains=query
+            ) | MobilePouch.objects.filter(
+                phone_name__phone_name__icontains=query
+            )| MobilePouch.objects.filter(
+                product_name__icontains=query
+            )
 
         context = {
 
