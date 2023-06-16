@@ -43,8 +43,35 @@
                 <input type="submit" value="Add to Cart" class="btns btn-success">
             </form>
         </div>
+
         {% comment %} <p class="text fs-3">{{ product.description }}</p> {% endcomment %}
     </div>
+    
 </div>
+<div class="row">
+    {% if product.image1 %}
+      <div class="col-md-4">
+        <img class="product-image" src="{{product.image1.url}}" alt="Product Image 1">
+      </div>
+      {% endif %}
+      {% if product.image2 %}
+      <div class="col-md-4">
+        <img class="product-image" src="{{product.image2.url}}" alt="Product Image 1">
+      </div>
+      {% endif %}
+      {% if  product.image3%}
+      <div class="col-md-4">
+        <img class="product-image" src="{{product.image3.url}}" alt="Product Image 1">
+      </div>
+      {% endif %}
+      {% if product.image4  %}
+      <div class="col-md-4">
+        <img class="product-image" src="{{product.image4.url}}" alt="Product Image 1">
+      </div>
+      {% endif %}
+
+      
+    </div>
+
 {% endif %}
 {% endblock %}

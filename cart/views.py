@@ -32,7 +32,7 @@ def cart_detail(request):
             initial={'quantity': item['quantity'],
                      'update': True}
         )
-
+        
+    
     categories = MobileBrand.objects.all()
-
     return render(request,'cart_detail/detail.html', {'cart': cart, 'categories': categories})
