@@ -55,13 +55,19 @@ def payment(request,id):
     decimal_amount =order.get_total_cost()
     amount_in_paisa = int(decimal_amount)
     amount =amount_in_paisa * 100
-    print(amount)
 
     
     razorpay_order = razorpay_client.order.create(dict(amount=amount, currency=currency, payment_capture='0'))
     #     Order id of newly created order
     razorpay_order_id = razorpay_order['id']
+ 
+
+    add_order= Order.objects.get(id=id)
+    add_order.provider_order_id = razorpay_order_id
+    add_order.save()
     
+    
+  
     callback_url = reverse('orders:paymenthandler')
     #     We need to pass these details to frontend
 
@@ -77,7 +83,7 @@ def payment(request,id):
     context['callback_url'] = callback_url
     return render(request, 'orders/order/payment.html', context)
 
-from django.http import HttpResponse
+
 
 @csrf_exempt
 def paymenthandler(request):
@@ -89,11 +95,52 @@ def paymenthandler(request):
             params_dict = {
                 'razorpay_order_id': razorpay_order_id,
                 'razorpay_payment_id': payment_id,
-                'razorpay_signature': signature
+                'razorpay_signature': signature,
+     
             }
+    
+    
+            add_order = Order.objects.get(provider_order_id=razorpay_order_id)
+            payment = razorpay_client.payment.fetch(payment_id)
+            payment_status=payment.get("status")
+            payment_method=payment.get("method")
+
+            acquirer_data = payment.get("acquirer_data")
+            upi_transaction_id=acquirer_data.get("upi_transaction_id")
+        
+  
+
+            add_order.payment_status=payment_status
+            add_order.payment_method=payment_method
+            add_order.upi_transaction_id=upi_transaction_id
+            add_order.payment_id = payment_id
+            add_order.signature_id = signature
+
+            if payment.get("status")=='authorized':
+                add_order.paid = True
+
+
+
+            # add_order.paid=True
+
+            add_order.save()
+            # payment = razorpay_client.payment.fetch(payment_id)
+
+            # payment_status=payment.get("status")
+            # print(payment)
+            # payment_method=(payment.get("method"))
+
+            
+            
+
+
             result = razorpay_client.utility.verify_payment_signature(params_dict)
             if result is None:
-                amount = 20000
+                order= Order.objects.get(provider_order_id=razorpay_order_id)
+                decimal_amount =order.get_total_cost()
+                amount_in_paisa = int(decimal_amount)
+                amount =amount_in_paisa * 100
+                
                 try:
                     razorpay_client.payment.capture(payment_id, amount)
 
@@ -105,12 +152,7 @@ def paymenthandler(request):
                     return redirect('/')
             else:
 
-                # payment = razorpay_client.payment.fetch(payment_id)
-                # if payment.get('status') :
-                #     payment_address = Order.objects.get(id=payment.get('metadata').get('razorpay_order_id'))
-                #     payment_address.paid = True
-                #     payment_address.save()
-
+                payment = razorpay_client.payment.fetch(payment_id)
                 messages.info(request,'payment failed')
                 return redirect('/')
         except:
